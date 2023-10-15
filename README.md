@@ -1,4 +1,4 @@
-# Pokemon GO Spoofing GPX Converter
+# GPX Converter for Pokemon GO
 
 This web application allows you to convert a list of coordinates into a GPX file format.
 
@@ -13,11 +13,5 @@ This web application allows you to convert a list of coordinates into a GPX file
 4. Click the "Download" button.
 
 5. The converted GPX file will be downloaded to your device.
-
-## Features
-
-- Converts a list of coordinates into a GPX file format.
-- Supports both Android and iOS file formats.
-- Removes empty lines and ignores invalid coordinates.
 
 ## Accessible at : https://soarespt.github.io/pokemongo-gpx-generator/
