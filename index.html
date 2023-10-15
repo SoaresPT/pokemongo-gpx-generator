@@ -4,114 +4,109 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="ThemeFactory.net">
 
-    <title>Pokemon GO Spoofing Guide | In-depth guide covering everything in order to spoof on Pokemon GO</title>
+    <title>Pokemon GO - GPX Generator</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="./css/jumbotron.css" rel="stylesheet">
-	<!-- Clear the contents of the textarea -->
-	<script type="text/javascript">
-		function clearThis(target){
-			target.value= "";
-		}
-	</script>
+    <style>
+      .jumbotron {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+      }
+      .pokeball-wrapper {
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+      .pokeball-image {
+        max-width: 100%;
+      }
+      .coordinates-textarea {
+        width: 100%;
+        resize: vertical;
+      }
+    </style>
   </head>
 
   <body>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-        </div>
-      </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">
+        <img src="pokeball.png" alt="Pokemon GO" width="30" height="30" class="d-inline-block align-top">
+        Pokemon GO - GPX Generator
+      </a>
     </nav>
 
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-     <nav class="jumbo-nav">
-      <div class="navigation-wrapper">
-        <div class="navigation">
-          <div class="header-logo">
-            <a href="./index.html">
-              <img src="./images/pokemon_go_logo.png" />
-            </a>
+    <div class="jumbotron">
+      <div class="container">
+        <h1 class="display-4">GPX Converter</h1>
+        <div class="form-group">
+          <label for="text-val">Coordinates:</label>
+          <textarea id="text-val" class="coordinates-textarea" rows="10" placeholder="Paste your coordinates here..."></textarea>
+        </div>
+        <div class="form-group">
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" id="gpx" value="gpx" name="fileformat" checked>
+            <label class="custom-control-label" for="gpx">GPX Format (Android)</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" id="txt" value="txt" name="fileformat">
+            <label class="custom-control-label" for="txt">TXT Format (iOS)</label>
           </div>
         </div>
-      
-        <!-- Example row of columns -->
-        <div class="container">
-          <div class="row">
-            <div class="col-md-20">
-              <div class="pokeball-wrapper">
-                <img src="./images/pokeball.png" />
-              </div>
-              <div class="enhanced" align="center">
-                <h2>GPX Converter</h2>
-				<label for="text-val">Coordinates:</label><br>
-				<textarea id="text-val" rows="20" cols="40" onfocus="clearThis(this)">Paste your coordinates here...</textarea>
-				<br>
-				<div class="custom-control custom-radio">
-				 <fieldset id="group1">
-					<input type="radio" class="custom-control-input" id="gpx" value="gpx" name="fileformat" checked>
-					<label class="custom-control-label" for="radiogpx">GPX Format (Android)</label>
-					<input type="radio" class="custom-control-input" id="tx" value="txt" name="fileformat">
-					<label class="custom-control-label" for="radiogpx">TXT Format (iOS)</label>
-				</fieldset>
-				</div>
-				<button class="btn btn-default" id="dl-btn">Download</button>
-				<!-- Default checked -->
-				<script>
-					document.getElementById("dl-btn").addEventListener("click", function(){
-						var lines = document.getElementById('text-val').value.split('\n');
-						var gpxtext = '<?xml version="1.0" encoding="UTF-8" ?>\n<gpx>\n<author>SoaresPT#4000</author>\n<desc>Made For pokedex100 Server. Original idea by : Rᴏᴏᴛ＠ᴛᴄʜᴀᴠᴇɪ∶~＃</desc>\n';
-						for(var i = 0;i < lines.length;i++){
-								gpxtext += '<wpt lat="'+ lines[i].split(',')[0] + '" lon="' + lines[i].split(',')[1] + '">\n<name>WP' +i+'</name>\n</wpt>\n';
-							}
-						gpxtext +='</gpx>';	
-						var text = document.getElementById("text-val").value;
-						var dt = new Date();
-						var filename = "gpx-" + dt.getFullYear() + dt.getMonth() + dt.getDate() + dt.getHours() + dt.getMinutes() + dt.getSeconds() + "." + document.querySelector('input[name="fileformat"]:checked').value;
-						var blob = new Blob([gpxtext], {
-							type: "text/xml"
-						});				
-						saveAs(blob, filename);
-					}, false);
-				</script>
-				<div>
-				<h2>FAQ</h2>
-				<b>Q: Will this work with FGL Pro?</b><br />
-				A: No. FGL Pro doesn't have that function. Use <a href="http://gpsjoystick.theappninjas.com/faq/" target="_blank">GPS JoyStick</a> for that.<br />
-				<b>Q: Can this be used on iOS/Android?</b><br />
-				A: Yes. Select the appropiate option above and click Download.<br>
-				<b>Q: Where can I find GPX Routes?</b><br>
-				A: You can find already made routes <a href="https://drive.google.com/open?id=1Qor3Hm-ECv0toOft4E1gU8gxqoPyMbP_" target="_blank">here</a> and <a href="https://drive.google.com/drive/folders/18UHdjwNPFJ50cln32DsVl-__jjU0-pxO" target="_blank">here</a><br>
-				<b>Q: How do I import routes?</b><br>
-				A: Open GPS JoyStick click the 3 line menu (☰) on the top-left corner and click GPX Import/Export. Proceed to import any .gpx file that you may have.<br> Afterwards click the Waypoints tab then the green button on the bottom right corner and choose "Create route from all".<br>
-				<b>Q: How can I contact you?</b><br>
-				A: My Discord username is : SoaresPT#4000. Alternatively <a href="http://discordapp.com/users/186588690909233152">click here</a> to talk to me. Even if it's just to say Hi! :)<br>
-             </div>
-           </div>
-          </div>
-        </div>
-        
+        <button class="btn btn-primary" id="dl-btn">Download</button>
       </div>
-    </nav>
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="./js/bootstrap.min.js"></script>
-	<script src="./js/FileSaver.min.js"></script>
+    </div>
+
+    <div class="container">
+      <h2>FAQ</h2>
+      <b>Q: Will this work with FGL Pro?</b><br>
+      A: No. FGL Pro doesn't have that function. Use <a href="http://gpsjoystick.theappninjas.com/faq/" target="_blank">GPS JoyStick</a> for that.<br>
+      <b>Q: Can this be used on iOS/Android?</b><br>
+      A: Yes. Select the appropriate option above and click Download.<br>
+      <b>Q: Where can I find GPX Routes?</b><br>
+      A: You can find already made routes <a href="https://drive.google.com/open?id=1Qor3Hm-ECv0toOft4E1gU8gxqoPyMbP_" target="_blank">here</a>, <a href="https://drive.google.com/drive/u/0/folders/1CUcndhlfffiSaBd0FfyhtVieE2BX8EHq" target="_blank">here</a> or <a href="https://drive.google.com/drive/u/0/folders/1c89gK9hburycF6htoZLD2Zi2B1aDfTZt" target="_blank">here</a><br>
+      <b>Q: How do I import routes?</b><br>
+      A: Open GPS JoyStick click the 3 line menu (☰) on the top-left corner and click GPX Import/Export. Proceed to import any .gpx file that you may have.<br> Afterwards click the Waypoints tab then the green button on the bottom right corner and choose "Create route from all".<br>
+      <b>Q: How can I contact you?</b><br>
+      A: You can make a issue/PR if you notice a bug/want to add a newer feature. My Discord username is: SoaresPT. Alternatively <a href="http://discordapp.com/users/186588690909233152">click here</a> to talk to me. Even if it's just to say Hi! :)
+    </div>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+    <script>
+document.getElementById("dl-btn").addEventListener("click", function() {
+  var lines = document.getElementById('text-val').value.split('\n');
+
+  // Filter out empty lines
+  lines = lines.filter(function(line) {
+    return line.trim() !== '';
+  });
+
+  var gpxtext = '<?xml version="1.0" encoding="UTF-8" ?>\n<gpx>\n<author>SoaresPT#4000</author>\n<desc>Original idea by: Rᴏᴏᴛ＠ᴛᴄʜᴀᴠᴇɪ∶~＃</desc>\n';
+
+  for (var i = 0; i < lines.length; i++) {
+    var coordinates = lines[i].split(',');
+    if (coordinates.length === 2) {
+      gpxtext += '<wpt lat="' + coordinates[0].trim() + '" lon="' + coordinates[1].trim() + '">\n<name>WP' + i + '</name>\n</wpt>\n';
+    }
+  }
+  gpxtext += '</gpx>';
+
+  var dt = new Date();
+  var filename = "gpx-" + dt.getFullYear() + dt.getMonth() + dt.getDate() + dt.getHours() + dt.getMinutes() + dt.getSeconds() + "." + document.querySelector('input[name="fileformat"]:checked').value;
+  var blob = new Blob([gpxtext], {
+    type: "text/xml"
+  });
+
+  var link = document.createElement('a');
+  link.href = window.URL.createObjectURL(blob);
+  link.download = filename;
+  link.click();
+}, false);
+    </script>
   </body>
 </html>
