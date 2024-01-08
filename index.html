@@ -27,6 +27,10 @@
         width: 100%;
         resize: vertical;
       }
+      /* Hide the output textarea by default */
+      #output-div {
+        display: none;
+      }
     </style>
   </head>
 
@@ -57,10 +61,37 @@
           </div>
         </div>
         <button class="btn btn-primary" id="dl-btn">Download</button>
+        <!-- Updated the button label and ID -->
+        <button class="btn btn-primary" id="velocity-btn">Display Velocity Links</button>
       </div>
     </div>
 
     <div class="container">
+      <!-- Updated div for the output below the existing text area -->
+      <div id="output-div" style="display: none;">
+        <div class="form-group">
+          <label for="output-textarea">Output:</label>
+          <textarea id="output-textarea" class="coordinates-textarea" rows="10" readonly></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h2>Usage</h2>
+      <h4>GPX Generator</h4>
+      <ul>
+        <li>Enter the coordinates in the provided textarea. Each coordinate should be separated by a new line and in the format: latitude,longitude (37.795595333601256,-122.39341757928418).</li>
+        <li>Select the desired file format: GPX (for Android) or TXT (for iOS).</li>
+        <li>Click the "Download" button.</li>
+        <li>The converted GPX file will be downloaded to your device.</li>
+      </ul>
+      <h4>Field Quests</h4>
+      <p>Since <a href="https://play.google.com/store/apps/details?id=com.pokemod.velocity&hl=en_US" target="_blank">Velocity</a> can't handle links from a browser on android 12 or higher this tool can be used to copy paste field quests from Pokedex100.</p>
+      <ul>
+        <li>Copy paste the whole field quest text on the Coordinates box</li>
+        <li>Click the "Display Velocity Links" button.</li>
+        <li>Copy the output and paste it in a private discord channel of your own.</li>
+      </ul>
       <h2>FAQ</h2>
       <b>Q: Will this work with FGL Pro?</b><br>
       A: No. FGL Pro doesn't have that function. Use <a href="http://gpsjoystick.theappninjas.com/faq/" target="_blank">GPS JoyStick</a> for that.<br>
@@ -78,35 +109,68 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
     <script>
-document.getElementById("dl-btn").addEventListener("click", function() {
-  var lines = document.getElementById('text-val').value.split('\n');
+      document.getElementById("dl-btn").addEventListener("click", function() {
+        var lines = document.getElementById('text-val').value.split('\n');
 
-  // Filter out empty lines
-  lines = lines.filter(function(line) {
-    return line.trim() !== '';
-  });
+        // Filter out empty lines
+        lines = lines.filter(function(line) {
+          return line.trim() !== '';
+        });
 
-  var gpxtext = '<?xml version="1.0" encoding="UTF-8" ?>\n<gpx>\n<author>SoaresPT#4000</author>\n<desc>Original idea by: Rᴏᴏᴛ＠ᴛᴄʜᴀᴠᴇɪ∶~＃</desc>\n';
+        var gpxtext = '<?xml version="1.0" encoding="UTF-8" ?>\n<gpx>\n<author>SoaresPT#4000</author>\n<desc>Original idea by: Rᴏᴏᴛ＠ᴛᴄʜᴀᴠᴇɪ∶~＃</desc>\n';
 
-  for (var i = 0; i < lines.length; i++) {
-    var coordinates = lines[i].split(',');
-    if (coordinates.length === 2) {
-      gpxtext += '<wpt lat="' + coordinates[0].trim() + '" lon="' + coordinates[1].trim() + '">\n<name>WP' + i + '</name>\n</wpt>\n';
-    }
-  }
-  gpxtext += '</gpx>';
+        for (var i = 0; i < lines.length; i++) {
+          var coordinates = lines[i].split(',');
+          if (coordinates.length >= 2) {
+            gpxtext += '<wpt lat="' + coordinates[0].trim() + '" lon="' + coordinates[1].trim() + '">\n<name>WP' + i + '</name>\n</wpt>\n';
+          }
+        }
+        gpxtext += '</gpx>';
 
-  var dt = new Date();
-  var filename = "gpx-" + dt.getFullYear() + dt.getMonth() + dt.getDate() + dt.getHours() + dt.getMinutes() + dt.getSeconds() + "." + document.querySelector('input[name="fileformat"]:checked').value;
-  var blob = new Blob([gpxtext], {
-    type: "text/xml"
-  });
+        var dt = new Date();
+        var filename = "gpx-" + dt.getFullYear() + dt.getMonth() + dt.getDate() + dt.getHours() + dt.getMinutes() + dt.getSeconds() + "." + document.querySelector('input[name="fileformat"]:checked').value;
+        var blob = new Blob([gpxtext], {
+          type: "text/xml"
+        });
 
-  var link = document.createElement('a');
-  link.href = window.URL.createObjectURL(blob);
-  link.download = filename;
-  link.click();
-}, false);
+        var link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+      }, false);
+    </script>
+    <script>
+      document.getElementById("velocity-btn").addEventListener("click", function() {
+        var lines = document.getElementById('text-val').value.split('\n');
+
+        // Filter out empty lines
+        lines = lines.filter(function(line) {
+          return line.trim() !== '';
+        });
+
+        var gpxtext = '';
+        var outputDiv = document.getElementById('output-div');
+        var outputTextarea = document.getElementById('output-textarea');
+
+        for (var i = 0; i < lines.length; i++) {
+          var coordinates = lines[i].split(',');
+          if (coordinates.length >= 2) {
+            gpxtext += `[Coordinate #${i + 1}](<https://pk.md/${coordinates[0].trim()},${coordinates[1].trim()}>)\n`;
+          }
+        }
+
+        // Update the text content of the output textarea
+        outputTextarea.textContent = gpxtext;
+
+        // Toggle the visibility of the output div
+        if (outputDiv.style.display === 'none') {
+          outputDiv.style.display = 'block';
+          document.getElementById('velocity-btn').textContent = 'Hide Velocity Links';
+        } else {
+          outputDiv.style.display = 'none';
+          document.getElementById('velocity-btn').textContent = 'Display Velocity Links';
+        }
+      }, false);
     </script>
   </body>
 </html>
