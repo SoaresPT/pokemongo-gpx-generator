@@ -142,34 +142,54 @@
     <script>
       document.getElementById("velocity-btn").addEventListener("click", function() {
         var lines = document.getElementById('text-val').value.split('\n');
+        var outputDiv = document.getElementById('output-div');
+        outputDiv.innerHTML = ''; // Clear previous output
+        outputDiv.style.border = '1px solid #ccc'; // Add border to simulate a box
+        outputDiv.style.padding = '10px'; // Add some padding
 
-        // Filter out empty lines
-        lines = lines.filter(function(line) {
-          return line.trim() !== '';
+        // Create and append the title
+        var title = document.createElement('h2');
+        title.textContent = 'Velocity Links';
+        title.style.textAlign = 'center'; // Center the title
+        outputDiv.appendChild(title);
+
+        lines.forEach(function(line, index) {
+          var parts = line.split(',');
+          if (parts.length >= 3) {
+            var coords = parts[0].trim() + ',' + parts[1].trim();
+            var details = parts[2].trim();
+            var cooldown = details.match(/\d+(\.\d+)?min/); // Matches the cooldown pattern
+            var setInfo = details.match(/Set \d+/); // Matches the "Set X" pattern
+
+            var anchorText = coords;
+            if (cooldown) {
+              anchorText += ' (' + cooldown[0] + ')';
+            }
+            if (setInfo) {
+              anchorText += ' - ' + setInfo[0];
+            }
+
+            var link = document.createElement('a');
+            link.href = `https://pk.md/${coords}`;
+            link.innerHTML = anchorText;
+            link.target = "_blank";
+            link.style.display = 'block';
+
+            link.addEventListener('click', function() {
+              this.style.color = 'purple';
+              this.style.textDecoration = 'line-through';
+            });
+
+            outputDiv.appendChild(link);
+          }
         });
 
-        var gpxtext = '';
-        var outputDiv = document.getElementById('output-div');
-        var outputTextarea = document.getElementById('output-textarea');
-
-        for (var i = 0; i < lines.length; i++) {
-          var coordinates = lines[i].split(',');
-          if (coordinates.length >= 2) {
-            gpxtext += `[Coordinate #${i + 1}](<https://pk.md/${coordinates[0].trim()},${coordinates[1].trim()}>)\n`;
-          }
-        }
-
-        // Update the text content of the output textarea
-        outputTextarea.textContent = gpxtext;
-
         // Toggle the visibility of the output div
-        if (outputDiv.style.display === 'none') {
-          outputDiv.style.display = 'block';
-          document.getElementById('velocity-btn').textContent = 'Hide Velocity Links';
-        } else {
-          outputDiv.style.display = 'none';
-          document.getElementById('velocity-btn').textContent = 'Display Velocity Links';
-        }
+        outputDiv.style.display = outputDiv.style.display === 'none' ? 'block' : 'none';
+        document.getElementById('velocity-btn').textContent = outputDiv.style.display === 'block' ? 'Hide Velocity Links' : 'Display Velocity Links';
+
+        // Scroll to the outputDiv
+        outputDiv.scrollIntoView({ behavior: 'smooth' });
       }, false);
     </script>
   </body>
